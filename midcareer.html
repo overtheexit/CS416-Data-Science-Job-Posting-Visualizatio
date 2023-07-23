@@ -1,25 +1,23 @@
 <!doctype html>
 <html>
 <head>
-    <title>Narrative Visualization</title>
     <style>
         .bar {
             fill: green;
         }
         .highlight {
-            fill: red;
+            fill:red;
         }
     </style>
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
-    <link rel="stylesheet" href="main.css">
 
+    <link rel="stylesheet" href="main.css">
 </head>
 <body>
-<h2> Salary Statistics by Majors in Undergrad</h2>
-<p>The bar chart below is a Visualization of <mark>Early Career median salaries</mark> from different majors.</p>
+<p>The Bar Chart at this page visualizes <mark>Mid career median salaries</mark> for people from different majors in their undergraduate studies.</p>
 <p><mark>Hover you mouse over the bar</mark> to explore the data associated with each major</p>
-<p>This dataset was obtained from https://www.newyorkfed.org/research/college-labor-market/index#/outcomes-by-major</p>>
+
 <svg width="1500" height="600"></svg>
 <script>
 
@@ -40,9 +38,10 @@
         }
 
         xScale.domain(data.map(function(d) { return d.major; }));
-        yScale.domain([0, d3.max(data, function(d) { return d.Earlycareer; })]);
+        // yScale.domain([0, d3.max(data, function(d) { return d.Midcareer; })]);
+        yScale.domain([0, 120000]);
 
-         g.append("g")
+        g.append("g")
         .attr("class", "axis")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(xScale))
@@ -53,8 +52,7 @@
         .attr("dy", "-0.5em")
         .attr("transform", "rotate(-65)");
 
-      
-        g.append("g") // 'major' text position 
+        g.append("g")
          .attr("transform", "translate(0," + height + ")")
          //.call(d3.axisBottom(xScale))
          .append("text")
@@ -62,7 +60,7 @@
          .attr("x", 1350)
          .attr("text-anchor", "end")
          .attr("stroke", "black")
-         .text("major");  
+         .text("major");
 
         g.append("g")
          .call(d3.axisLeft(yScale).tickFormat(function(d){
@@ -71,9 +69,11 @@
          .ticks(10))
          .append("text")
          .attr("transform", "rotate(-90)")
+         .attr("y", 66)
          .attr("dy", "-5.1em")
          .attr("text-anchor", "end")
-         .attr("stroke", "black");
+         .attr("stroke", "black")
+         .text("Salary in dollars");
 
         g.selectAll(".bar")
          .data(data)
@@ -82,9 +82,9 @@
          .on("mouseover", onMouseOver) //Add listener for the mouseover event
          .on("mouseout", onMouseOut)   //Add listener for the mouseout event
          .attr("x", function(d) { return xScale(d.major); })
-         .attr("y", function(d) { return yScale(d.Earlycareer); })
+         .attr("y", function(d) { return yScale(d.Midcareer); })
          .attr("width", xScale.bandwidth())
-         .attr("height", function(d) { return height - yScale(d.Earlycareer); });
+         .attr("height", function(d) { return height - yScale(d.Midcareer); });
     });
 
     //mouseover event handler function
@@ -92,8 +92,8 @@
         d3.select(this).attr('class', 'highlight');
         d3.select(this)
           .attr('width', xScale.bandwidth() + 5)
-          .attr("y", function(d) { return yScale(d.Earlycareer) - 10; })
-          .attr("height", function(d) { return height - yScale(d.Earlycareer) + 10; });
+          .attr("y", function(d) { return yScale(d.Midcareer) - 10; })
+          .attr("height", function(d) { return height - yScale(d.Midcareer) + 10; });
 
         g.append("text")
          .attr('class', 'val') 
@@ -101,10 +101,10 @@
              return xScale(d.major);
          })
          .attr('y', function() {
-             return yScale(d.Earlycareer) - 15;
+             return yScale(d.Midcareer) - 15;
          })
          .text(function() {
-             return [ d.major + ': $' +d.Earlycareer];  // Value of the text
+             return [ d.major + ': $' +d.Midcareer];  // Value of the text
          });
     }
 
@@ -114,8 +114,8 @@
         d3.select(this).attr('class', 'bar');
         d3.select(this)
           .attr('width', xScale.bandwidth())
-          .attr("y", function(d) { return yScale(d.Earlycareer); })
-          .attr("height", function(d) { return height - yScale(d.Earlycareer); });
+          .attr("y", function(d) { return yScale(d.Midcareer); })
+          .attr("height", function(d) { return height - yScale(d.Midcareer); });
 
         d3.selectAll('.val')
           .remove()
@@ -131,7 +131,7 @@
         
         },
         color: ["black"],
-        x: 450,
+        x: 445,
         y: 120,
         dy: -50,
         dx: -100
@@ -141,12 +141,12 @@
     svg.append("g").call(makeAnnotations)
 </script>
 
-<p>Please feel free to <mark>navigate to the next page</mark> if you are interested in the mid-career median salaries for these majors!</p>
+<p><mark>navigate to the next page</mark> if you are interested in the Unemployment Rate for these majors!</p>
 
 <div class="pagination">
     <a href="#">&laquo;</a>
-    <a class="active" href="index.html">1</a>
-    <a href="midcareer.html">2</a>
+    <a href="index.html">1</a>
+    <a class="active" href="midcareer.html">2</a>
     <a href="unemployment.html">3</a>
     <a href="#">&raquo;</a>
 </div>
